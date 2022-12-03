@@ -5,6 +5,8 @@ using namespace std;
 
 #include "ListNode.h"
 
+typedef unsigned int U; //约定：类型T或就是U；或可转换为U，并依此定序
+
 template <typename T> class List {
 	
 private:
@@ -60,6 +62,34 @@ protected:
 		//mergeSort()调用时，this == &L && rank(p) + n = rank(q)
 	}
 
+	void selectionSort(ListNodePosi<T> p, int n) {//对从p开始连续的n个节点选择排序
+		ListNodePosi<T> head = p->pred, tail = p;
+		for (int i = 0; i < n; i++) tail = tail->succ;//待排序区间为(head,tail)
+		while (1 < n) {//在至少还剩两个节点之前，在待排序区间内
+			ListNodePosi<T> max = selectMax(head->succ, n);//找出最大者（歧义时后者优先）
+			insert(remove(max), tail);//将其移至无序区间末尾（作为有序区间新的首元素）
+			tail = tail->pred;
+			n--;
+		}
+	}
+
+	void insertiionSort(ListNodePosi<T> p, int n) {//对从p开始连续的n个节点插入排序
+		for (int r = 0; r < n; r++) {      //逐一为各节点
+			insert(search(p->data, r, p), p->data);//查找适当的位置并插入
+			p = p->succ;
+			remove(p->pred);//转向下一节点
+		}
+	}
+
+	void readixSort(ListNodePosi<T> p, int n) {//对从p开始连续的n个节点基数排序
+		ListNodePosi<T> head = p->pred;
+		ListNodePosi<T> tail = p;
+		for (int i = 0; i < n; i++) tail = tail->succ;//待排序区间为(head, tail)
+		for (U radixBit = 0x1; radixBit && (p = head); radixBit <<= 1)//以下反复地
+			for (int i = 0; i < n; i++)//根据当前基数为，将所有节点
+				radixBit& U(p->succ->data) ? insert(remove(p->succ), tail) : p = p->succ;//分拣为后缀（1),与前缀（0）
+	}
+
 public:
 	//构造函数
 	List() { init(); } //默认
@@ -111,6 +141,18 @@ public:
 
 	ListNodePosi<T> last() const {
 		return trailer->pred;
+	}
+
+	ListNodePosi<T> selectMax(ListNodePosi<T> p, int n) {//在p及其n - 1个后继中找出最大者
+		ListNodePosi<T> max = p;//最大者暂定为首节点p
+		for (ListNodePosi<T> cur = p; 1 < n; n--)
+			if (!lt((cur = cur->succ)->data ,max->data))//若当前元素不小于max，则
+				max = cur;//更新最大元素位置记录
+		return max;//返回最大节点位置
+	}
+
+	ListNodePosi<T> selectMax() {//整体最大
+		return selectMax(header->succ, _size);
 	}
 
 	ListNodePosi<T> insertAsFirst(T const& e) {//将e当作首节点插入
@@ -186,6 +228,9 @@ public:
 	}
 	
 };
+
+template<typename T> static bool lt (T* a, T* b) { return lt(*a, *b); }
+template<typename T> static bool lt (T& a, T& b) { return a< b; }
 
 int main() {
 	List<int> L1;
