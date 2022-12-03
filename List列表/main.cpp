@@ -74,6 +74,10 @@ public:
 		return _size;
 	}
 
+	bool empty() const {//判空
+		return _size <= 0;
+	}
+
 	List operator[] (Rank r) const {//重载下标操作符，通过列表的秩访问（效率低）
 		ListNodePosi<T> p = first(); //首节点出发
 		while (0 < r--) p = p->succ;//顺数第r个节点就是
@@ -103,6 +107,10 @@ public:
 
 	ListNodePosi<T> first() const {//首节点位置
 		return header->succ;
+	}
+
+	ListNodePosi<T> last() const {
+		return trailer->pred;
 	}
 
 	ListNodePosi<T> insertAsFirst(T const& e) {//将e当作首节点插入
@@ -142,10 +150,41 @@ public:
 		mergeSort(p, n);
 	}
 
+	int deduplicate() {//无序去重
+		int oldSize = _size;
+		ListNodePosi<T> p = first();
+		for (Rank r = 0; p != trailer; p = p->succ)
+			if (ListNodePosi<T> q = find(p->data, r, p))
+				remove(q);//此时q与p有雷同，但删除前者更为简明
+			else r++;//r为无重前缀的长度
+		return oldSize - _size;//删除元素总数
+	}
+
+	int uniquify() {//有序去重         成批剔除重复元素，效率高
+		if (_size < 2)  return 0;//平凡列表自然无重复
+		int oldSize = _size;//记录原规模
+		ListNodePosi<T> p = first();
+		ListNodePosi<T> q;//p为各区段起点，q为其后继
+		while (trailer != (q = p->succ))//反复考察相邻的节点对（p，q）
+			if (p->data != q->data) p = q;//若互异，则转向下一区段
+			else remove(q);//否则（雷同），删除后者
+		return oldSize - _size;//列表规模变化量，即被删除元素总数
+	}
+
 	void sort() {//列表整体排序
 		sort(first(), _size);
 	}
 
+	void print() const {
+		ListNodePosi<T> m = header->succ;
+		printf("[ ");
+		while (m != trailer) {
+			printf("%d, ", m->data);
+			m = m->succ;
+		}
+		printf("]");
+	}
+	
 };
 
 int main() {
@@ -157,9 +196,43 @@ int main() {
 	} else {
 		printf("no");
 	}
-	L1.sort();
+	printf("\n\nL1元素排序前元素：");
+	L1.print(); printf("\n");
+	L1.sort(); printf("L1排序后元素："); L1.print(); printf("\n\n");
+
+
 	List<int> L2;
 	ListNodePosi<int> p2;
 	p2 = L2.insertAsFirst(2); p2 = L2.insert(5, p2); p2 = L2.insert(p2, 3);
 	p2 = L2.insertAsLast(9); p2 = L2.insertAsLast(1); p2 = L2.insert(p2, 8);
-}	
+	L2.find(5);
+	printf("L2的元素：");
+	L2.print(); printf("\n\n");
+
+	List<int> L3;
+	ListNodePosi<int> p3;
+	p3 = L3.insertAsFirst(10); p3 = L3.insertAsFirst(1); p3 = L3.insertAsFirst(8);  p3 = L3.insertAsFirst(5);
+	p3 = L3.insertAsFirst(10); p3 = L3.insertAsFirst(8); p3 = L3.insertAsFirst(6); p3 = L3.insertAsFirst(10);
+	p3 = L3.insertAsFirst(6); p3 = L3.insertAsFirst(9); p3 = L3.insertAsFirst(10); p3 = L3.insertAsFirst(9);
+	p3 = L3.insertAsFirst(9); p3 = L3.insertAsFirst(9); p3 = L3.insertAsFirst(8); p3 = L3.insertAsFirst(10);
+	printf("L3无序列表去重前的元素："); L3.print(); printf("\n");
+	L3.deduplicate();
+	printf("L3无序列表去重后的元素："); L3.print(); printf("\n\n");
+
+	List<int> L4;
+	ListNodePosi<int> p4;
+	for (int i = 10; i >= 0; i--) {
+		p4 = L4.insertAsFirst(i); p4 = L4.insertAsFirst(i); p4 = L4.insertAsFirst(i);
+	}
+	printf("L4有序列表去重前的元素："); L4.print(); printf("\n");
+	L4.uniquify();
+	printf("L4有序列表去重后的元素："); L4.print(); printf("\n\n");
+
+	List<int> L5;
+	ListNodePosi<int> p5;
+	printf("\n\n");
+	for (int i = 1; i <= 10; i++) {
+		p5 = L5.insertAsLast(i);
+	}
+	L5.print();
+}
