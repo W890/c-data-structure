@@ -104,4 +104,17 @@ int main()
 	for (int i = 0; i < S1.size(); i++) {
 		printf("%d ", S1[i]);
 	}
+
+	//表达式测试
+	char m1[]="(1+2)/(1+2)*2";
+	char* RPN1 = new char[1];
+	RPN1[0] = '\0';
+	float r1 = evaluate(m1, RPN1);
+	printf("\n\nr1的值为：%.1f\n\n", r1);
+
+	char m2[] = "(0!+1)*2^(3!+4)-(5!-67-(8+9))";
+	char* RPN2 = new char[1];
+	RPN2[0] = '\0';
+	float r2 = evaluate(m2, RPN2);
+	printf("r2的值为：%.1f\n\n", r2);
 }

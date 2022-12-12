@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include<limits.h>
-
+#include<math.h>
 //int main() {
 //	//打印1——10数字
 //	int d = 1;
@@ -155,30 +155,40 @@
 
 
 
-void swap(int* px, int* py) {
-    int temp = *px;
-    *px = *py;
-    *py = temp;
-}
-
-void sort(int* n1, int* n2) {
-    if (*n1 > *n2)
-        swap(n1, n2);
-}
+//void swap(int* px, int* py) {
+//    int temp = *px;
+//    *px = *py;
+//    *py = temp;
+//}
+//
+//void sort(int* n1, int* n2) {
+//    if (*n1 > *n2)
+//        swap(n1, n2);
+//}
+//
+//int main() {
+//    int na, nb;
+//    puts("请输入两个整数：");
+//    printf("整数A：");
+//    scanf("%d", &na);
+//    printf("整数B：");
+//    scanf("%d", &nb);
+//
+//    sort(&na, &nb);
+//
+//    puts("将两数的值按升序排序：");
+//    printf("整数A的值是%d：", na);
+//    printf("整数B的值是%d: ", nb);
+//
+//    return 0;
+//}
 
 int main() {
-    int na, nb;
-    puts("请输入两个整数：");
-    printf("整数A：");
-    scanf("%d", &na);
-    printf("整数B：");
-    scanf("%d", &nb);
-
-    sort(&na, &nb);
-
-    puts("将两数的值按升序排序：");
-    printf("整数A的值是%d：", na);
-    printf("整数B的值是%d: ", nb);
-
-    return 0;
+	int number = 0;
+	scanf("%d", &number);
+	int fact = 1;
+	for (int i = 1; i <= number; i++) {
+		fact *= i;
+	}
+	printf("%d", fact);
 }

@@ -62,7 +62,7 @@ const char pri[N_OPTR][N_OPTR] = {//运算符优先等级[栈顶][当前]
 };
 
 
-Operator optr2rank(char op) {
+Operator optr2rank(char op) {//由运算符转译编号
 	switch (op) {
 	case '+':return ADD; //加
 	case '-':return SUB; //减
@@ -83,8 +83,32 @@ char orderBetween(char op1, char op2) {//比较两个运算符之间的优先级
 }
 
 
-void calcu() {
+int factorial(float number) {//求阶乘运算
+	int fact = 1;
+	for (int i = 1; i < number; i++) {
+		fact *= i;
+	}
+	return fact;
+}
 
+
+float calcu(char op, float num) {//一元计算
+	return (float)factorial(num);
+}
+
+#include <math.h>
+
+float calcu(float num1, char op, float num2) {//二元计算
+	float number = 0.0;
+	switch (op) {
+	case '+':number = num1 + num2; break;
+	case '-':number = num1 - num2; break;
+	case '*':number = num1 * num2; break;
+	case '/':number = num1 / num2; break;
+	case '^':number = pow(num1, num2); break;
+	}
+
+	return number;
 }
 
 
@@ -119,8 +143,8 @@ float evaluate(char* S, char*& RPN) {//对（已剔除白空格的）表达式S求值，并转换为
 				break;
 			}
 			default:exit(-1);//逢语法错误，不做处理直接退出
-			}//switch
-		} //while
-		return opnd.pop();//弹出并返回最后的计算结果
-	}
+			}
+		} //switch
+	}//while
+	return opnd.pop();//弹出并返回最后的计算结果
 }
