@@ -244,4 +244,5 @@ public:
 	T& operator[](Rank r) const {//重载下标操作符，可以类似于数组形式引用各元素
 		return _elem[r];
 	}
+
 };
