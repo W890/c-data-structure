@@ -87,6 +87,7 @@ int main()
 {
 	using namespace std;
 
+
 	Stack<int> S1;
 	for (int i = 1; i <= 5; i++) {
 		S1.push(i);
@@ -110,7 +111,7 @@ int main()
 	char* RPN1 = new char[1];
 	RPN1[0] = '\0';
 	float r1 = evaluate(m1, RPN1);
-	printf("\n\nr1的值为：%.1f\n\n", r1);
+	printf("\n\nr1的值为：%.1f\n", r1);
 
 	char m2[] = "(0!+1)*2^(3!+4)-(5!-67-(8+9))";
 	char* RPN2 = new char[1];

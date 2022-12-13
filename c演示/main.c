@@ -192,3 +192,24 @@ int main() {
 	}
 	printf("%d", fact);
 }
+
+//float calcu(float num1, char op, float num2) {//¶þÔª¼ÆËã
+//	float number = 0.0;
+//	switch (op) {
+//	case '+':number = num1 + num2; break;
+//	case '-':number = num1 - num2; break;
+//	case '*':number = num1 * num2; break;
+//	case '/':number = num1 / num2; break;
+//	case '^':number = pow(num1, num2); break;
+//	}
+//
+//	return number;
+//}
+//
+//int main() {
+//	printf("%.1f\n", calcu(2 ,'+', 2));
+//	printf("%.1f\n", calcu(2, '-', 2));
+//	printf("%.1f\n", calcu(2, '*', 8));
+//	printf("%.1f\n", calcu(2, '/', 2));
+//	printf("%.1f\n", calcu(2, '^', 3));
+//}
