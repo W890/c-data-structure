@@ -23,5 +23,5 @@ public://size(), empty()以及其他开放接口，都可以使用
 
 int main()
 {
-
+	
 }
