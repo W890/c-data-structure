@@ -1,8 +1,6 @@
 #include <iostream>
 using namespace std;
 
-#include "../List列表/ListNode.h"
-
 #include "../List列表/List.h"//以列表为基类，派生出栈模板类
 
 template <typename T> class Stack :public List<T> {//将列表的首/末端作为栈顶/底
@@ -23,5 +21,14 @@ public://size(), empty()以及其他开放接口，都可以使用
 
 int main()
 {
-	
+	Stack<int> S1;
+	for (int i = 1; i <= 6; i++) {
+		S1.push(i);
+	}
+	S1.print();
+	printf("\n");
+	for (int i = S1.size(); i >= 4; i--) {
+		S1.pop();
+	}
+	S1.print();
 }

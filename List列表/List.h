@@ -1,6 +1,8 @@
 #pragma once
 
 
+#include "ListNode.h"
+
 typedef unsigned int U; //约定：类型T或就是U；或可转换为U，并依此定序
 
 template <typename T> class List {
