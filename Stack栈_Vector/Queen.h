@@ -63,4 +63,25 @@ void placeQueens(int N) {//N»ÊºóËã·¨£¨µü´ú°æ£©£º²ÉÓÃÊÔÌ½/»ØËİµÄ²ßÂÔ£¬½èÖúÕ»¼ÇÂ¼²
 	} while ((0 < q.x) || (q.y < N));//ËùÓĞ·ÖÖ§¾ùÒÑ»òÇî¾Ù»ò¼ôÖ½Ö®ºó£¬½áÊøËã·¨
 }
 
+//int N = 0;//ÆåÅÌ´óĞ¡
+//void displayRow(Queen& q) {//´òÓ¡µ±Ç°»Êºó£¨·ÅÖÃÓÚcolÁĞ£©ËùÔÚĞĞ
+//	printf("%2d: ", q.x);
+//	int i = 0;
+//	while (i++ < q.y)
+//		printf("[]");
+//	printf("¨€");
+//	while (i++ < N)
+//		printf("[]");
+//	printf("%2d\n", q.y);
+//}
+//
+//
+//void displayProgress(Stack<Queen>& S, int nQueen) {
+//	system("cls");
+//	N = nQueen;
+//	S.traverse(displayRow);
+//	if (nQueen <= S.size())
+//		cout << nSolu << " solution(s) found after " << nCheck << nCheck << " check(s)\a";
+//	getchar();
+//}
 

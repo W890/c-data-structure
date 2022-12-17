@@ -39,7 +39,6 @@ int bestWindow(Queue<Customer> windows[], int nWin) {//为新到顾客确定最佳队列
 }
 
 
-
 void simulate(int nWin, int servTime) {//按指定窗口数、服务总时间模拟银行业务
 	Queue<Customer>* windows = new Queue<Customer>[nWin];//为每一个窗口哦创建一个队列
 
