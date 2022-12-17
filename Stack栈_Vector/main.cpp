@@ -21,7 +21,10 @@ public://size(), empty()以及其他开放接口，都可以使用
 	}
 };
 
-#include <iostream>
+
+#include "Queen.h"
+
+
 
 void convert(Stack<char>& S, _int64 n, int base) {//十进制数n到base进制的转换（递归）
 	//base进制位
@@ -80,10 +83,6 @@ bool paren(const char exp[], int lo, int hi) {//表达式括号匹配检查，可以兼顾三种
 
 	return S.empty();//整个表达式扫描过后，栈中若仍残留（左）括号，则不匹配；否则（栈空）匹配
 }
-
-
-#include "Queen.h"
-
 
 #include "RPN.h"
 

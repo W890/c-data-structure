@@ -1,5 +1,23 @@
 #pragma once
 
+#include <iostream>
+
+#include <cstdio>
+
+#include<cstring>
+
+#define QUEEN_MAX 20
+
+typedef enum {
+	Continuous, Step
+}RunMode;
+
+
+extern RunMode runMode;//ÔËĞĞÄ£Ê½
+extern int nSolu;//½âµÄ×ÜÊı
+extern int nCheck;//³¢ÊÔµÄ×Ü´ÎÊı
+
+
 struct Queen {//»ÊºóÀà
 	int x, y;//»ÊºóÔÚÆåÅÌÉÏµÄÎ»ÖÃ×ø±ê
 
@@ -44,4 +62,5 @@ void placeQueens(int N) {//N»ÊºóËã·¨£¨µü´ú°æ£©£º²ÉÓÃÊÔÌ½/»ØËİµÄ²ßÂÔ£¬½èÖúÕ»¼ÇÂ¼²
 		}
 	} while ((0 < q.x) || (q.y < N));//ËùÓĞ·ÖÖ§¾ùÒÑ»òÇî¾Ù»ò¼ôÖ½Ö®ºó£¬½áÊøËã·¨
 }
+
 
