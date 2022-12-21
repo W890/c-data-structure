@@ -245,4 +245,13 @@ public:
 		return _elem[r];
 	}
 
+	void traverse(void (*visit)(T&)) {//遍历（使用函数指针，只读或局部性修改）
+		for (Rank i = 0; i < _size; i++)
+			visit(_elem[i]);
+	}
+
+	template <typename VST> void traverse(VST& visit) {//遍历（使用函数对象，可全局性修改）
+		for (Rank i = 0; i < _size; i++)
+			visit(_elem[i]);
+	}
 };
