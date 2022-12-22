@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="Queen.h" />
     <ClInclude Include="RPN.h" />
+    <ClInclude Include="Stack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
