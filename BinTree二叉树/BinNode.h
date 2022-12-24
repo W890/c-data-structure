@@ -22,6 +22,13 @@
 #define uncle(x) (sibling((x)->parent)) //叔叔
 #define FromPaentTo(x) (IsRoot(x) ? _root:(IsLChild(x) ? (x).parent->lc:(x).parent->rc))//来自父亲的引用
 
+
+/*DSA*/#define HeightUpdated(x) /*高度更新常规条件*/ \
+/*DSA*/        ( (x).height == 1 + max( stature( (x).lc ), stature( (x).rc ) ) )
+#define Balanced(x) ( stature( (x).lc ) == stature( (x).rc ) ) //理想平衡条件
+#define BalFac(x) ( stature( (x).lc ) - stature( (x).rc ) ) //平衡因子
+#define AvlBalanced(x) ( ( -2 < BalFac(x) ) && ( BalFac(x) < 2 ) ) //AVL平衡条件
+
 #include "../Queue队列_List/queue.h"
 #include "../Stack栈_Vector/Stack.h"
 
@@ -111,8 +118,73 @@ struct BinNode {
 		//travIn_R(this, visit);//递归版
 	}
 
+
+	template <typename VST>
+	void travPost(VST& visit) {//子树后序遍历
+		travPost_I(this, visit);//迭代版
+		//travPost_R(this, visit);//递归版
+	}
+
+
+	//比较器，判等器
+	bool operator<(BinNode const& bn) {//小于
+		return data < bn.data;
+	}
+
+	bool operator==(BinNode const& bn) {//等于
+		return data == bn.data;
+	}
+
+	BinNodePosi<T> zig() {//顺时针旋转
+		BinNodePosi<T> lChild = lc;
+		lChild->parent = this->parent;
+		if (lChild->parent)
+			((this == lChild->parent->rc) ? lChild->parent->rc : lChild->parent->lc) = lChild;
+		lc = lChild->rc;
+		if (lc) lc->parent = this;
+		//update heights()
+		height = 1 + max(stature(lc), stature(rc));
+		lChild->height = 1 + max(stature(lChild->lc), stature(lChild->rc));
+		for (BinNodePosi<T> x = lChild->parent; x; x = x->parent)
+			if (HeightUpdated(*x))
+				break;
+			else {
+				x->height = 1 + max(stature(x->lc), stature(x->rc));
+			}
+		return lChild;
+	}
+
+	BinNodePosi<T> zag() {//逆时针旋转
+		BinNodePosi<T> rChild = rc;
+		rChild->parent = this->parent;
+		if (rChild->parent)
+			((this == rChild->parent->lc) ? rChild->parent->lc : rChild->parent->rc) = rChild;
+		rc = rChild->lc;
+		if (rc) rc->parent = this;
+		rChild->lc = this;
+		this->parent = rChild;
+		//update heights
+		height = 1 + max(stature(lc), stature(rc));
+		rChild->height = 1 + max(stature(rChild->lc), stature(rChild->rc));
+		for (BinNodePosi<T> x = rChild->parent; x; x = x->parent)
+			if (HeightUpdated(*x))
+				break;
+			else
+				x->height = 1 + max(stature(x->lc), stature(x->rc));
+		return rChild;
+	}
+
+	//BinNodePosi<T> balance() {//完全平衡化
+	//	
+	//}
+
+	//BinNodePosi<T> imitate(const BinNodePosi<T> ){//临摹
+	//
+	//}
 };
 
+
+/***********************二叉树先序遍历算法travPre*************************/
 template <typename T, typename VST>
 void travPre_I1(BinNodePosi<T> x, VST& visit) {//子树先序遍历（迭代版#1）
 	Stack<BinNodePosi<T>> S;//辅助栈
@@ -152,10 +224,10 @@ void travPre_R(BinNodePosi<T> x, VST& visit) {//二叉树先序遍历算法（递归版）
 	travPre_R(x->lc, visit);
 	travPre_R(x->rc, visit);
 }
+/*******************************************************************************************************/
 
 
-
-
+/************************二叉树中序遍历travIn************************/
 template <typename T>//从当前节点出发，沿左分支不断深入，直至没有左分支的节点
 static void goAlongVing(BinNodePosi<T> x, Stack<BinNodePosi<T>>& S) {
 	while (x) {
@@ -230,3 +302,41 @@ void travIn_R(BinNodePosi<T> x, VST& visit) {//二叉树中序遍历算法（递归版）
 	visit(x->data);
 	travIn_R(x->rc, visit);
 }
+/*****************************************************************************************************************/
+
+
+/***********************************二叉树后序遍历算法travPost***************************/
+template <typename T>//在以S栈顶节点为根的子树中，找到最高左侧可见叶节点
+static void gotoLeftmostLeaf(Stack<BinNodePosi<T>>& S) {//沿途所遇节点依次入栈
+	while(BinNodePosi<T> x = S.top())//自顶而下，反复检查当前节点（即栈顶）
+		if (HasLChild(*x)) {//尽可能向左
+			if (HasRChild(*x)) S.push(x->rc);//若有右孩子，优先入栈
+			S.push(x->lc);//然后才转至左孩子
+		} else//实在不得已
+			S.push(x->rc);//才向右
+		S.pop();//返回之前，弹出栈顶的空节点
+}
+
+template <typename T,typename VST>
+void travPost_I(BinNodePosi<T> x, VST& visit) {//二叉树的后序遍历（迭代版）
+	Stack<BinNodePosi<T>> S;//辅助栈
+	if (x) S.push(x);//根节点入栈
+	while (!S.empty()) {//x始终为当前节点
+		if (S.top() != x->parent)//若栈顶非x之父（而为右兄）
+			gotoLeftmostLeaf(S);//则在其右兄子树找到HLVFL（相当于递归深入）
+		x = S.pop();
+		visit(x->data);//弹出栈顶（即前一节点的后继），并访问
+	}
+}
+
+template <typename T, typename VST>//元素类型，操作器
+void travPost_R(BinNodePosi<T> x, VST& visit) {//二叉树后序遍历算法（递归版）
+	if (!x) return;
+	travPost_R(x->lc, visit);
+	travPost_R(x->rc, visit);
+	visit(x->data);
+}
+/********************************************************************************************************/
+
+
+
