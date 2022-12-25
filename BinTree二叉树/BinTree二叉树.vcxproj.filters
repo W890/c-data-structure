@@ -23,5 +23,8 @@
     <ClInclude Include="BinNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BinTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

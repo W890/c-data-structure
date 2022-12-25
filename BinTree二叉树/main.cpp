@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-#include "BinNode.h"
+#include "BinTree.h"
 
 int main() {
 
